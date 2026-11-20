@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f5">
+    <meta name="description" content="Explore the language signals in a news article with a local machine-learning model.">
+    <title>Signal — News analysis</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Signal home">
+          <span class="brand-mark" aria-hidden="true">s</span>
+          <span>signal<span class="brand-period">.</span></span>
+        </a>
+        <span class="local-note"><span class="status-dot"></span> Private, local analysis</span>
+      </header>
+
+      <main>
+        <section class="intro">
+          <p class="eyebrow"><span class="eyebrow-line"></span> A second look at the story</p>
+          <h1>Read between<br>the <span>headlines.</span></h1>
+          <p class="intro-copy">Explore the language patterns behind a news article. Not a verdict — a little more context for your own judgment.</p>
+        </section>
+
+        <section class="workspace" aria-label="Article analysis">
+          <div class="input-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-kicker">01 <span>— YOUR ARTICLE</span></p>
+                <h2>What are we looking at?</h2>
+              </div>
+              <span class="input-icon" aria-hidden="true">↙</span>
+            </div>
+
+            <label class="sr-only" for="article">Paste a news article</label>
+            <textarea id="article" maxlength="20000" placeholder="Paste the article text here. The more context you include, the more useful the analysis..." spellcheck="false"></textarea>
+            <div class="input-meta">
+              <span id="char-count">0 / 20,000</span>
+              <button id="sample-button" class="text-button" type="button"><span aria-hidden="true">✳</span> Try a sample</button>
+            </div>
+
+            <div class="form-footer">
+              <p>At least 60 characters <span aria-hidden="true">·</span> Nothing leaves this device</p>
+              <button id="analyze-button" class="analyze-button" type="button" disabled>
+                <span>Analyze article</span><span class="button-arrow" aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <p id="form-error" class="form-error" role="alert" hidden></p>
+          </div>
+
+          <aside class="result-panel" aria-live="polite" aria-label="Analysis result">
+            <div id="empty-state" class="empty-state">
+              <div class="orbit-art" aria-hidden="true">
+                <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
+                <span class="orbit-core"><span></span></span><i class="orbit-star star-one">✳</i><i class="orbit-star star-two">·</i>
+              </div>
+              <p class="section-kicker">02 <span>— THE READOUT</span></p>
+              <h2>Your perspective,<br>with another lens.</h2>
+              <p>Run an analysis to see the model's read and the words that shaped it.</p>
+              <div class="empty-rule"></div>
+              <p class="small-caveat">Language patterns can be clues, but they can't tell you whether a claim is true.</p>
+            </div>
+
+            <div id="result-state" class="result-state" hidden>
+              <p class="section-kicker">02 <span>— THE READOUT</span></p>
+              <div class="result-label-row">
+                <span id="result-icon" class="result-icon" aria-hidden="true">↗</span>
+                <span id="result-label" class="result-label">Likely real</span>
+              </div>
+              <p id="result-description" class="result-description"></p>
+              <div class="confidence-block">
+                <div class="confidence-label"><span>Model confidence</span><strong id="confidence-value">0%</strong></div>
+                <div class="confidence-track"><span id="confidence-bar"></span></div>
+                <p>How strongly the model favors this pattern — not the probability a claim is true.</p>
+              </div>
+              <div class="signals-block">
+                <div class="signals-title"><span>WORDS THAT MOVED THE NEEDLE</span><span class="signal-star">✳</span></div>
+                <div id="signal-list" class="signal-list"></div>
+              </div>
+              <div class="result-caveat"><span aria-hidden="true">↳</span><p id="result-caveat"></p></div>
+              <button id="reset-button" class="reset-button" type="button">Analyze another article <span aria-hidden="true">↗</span></button>
+            </div>
+          </aside>
+        </section>
+
+        <footer class="page-footer">
+          <p>BUILT FOR CURIOSITY, NOT CERTAINTY.</p>
+          <p>Model trained on historical U.S. news text <span>·</span> Always verify important claims with trusted sources.</p>
+        </footer>
+      </main>
+    </div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

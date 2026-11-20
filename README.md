@@ -1,5 +1,36 @@
 # Fake News Detection Project
 
+## Local web app
+
+The repository includes a responsive article-analysis app that runs entirely on your machine. It uses the TF-IDF + Logistic Regression approach from the notebook on `Fake.csv` (class `0`, fake) and `True.csv` (class `1`, real) inside `Datasets/datasets.zip`.
+
+Requires Python 3.10 or later:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Open <http://127.0.0.1:5000>. On the first analysis, the app trains a balanced sample of up to 6,000 articles per class and saves the pipeline to `model/fake_news_pipeline.joblib`. The model cache is ignored by Git; remove it to train again.
+
+`GET /api/health` reports whether the model is loaded. Send an article of 60–20,000 characters to `POST /api/analyze` as JSON:
+
+```powershell
+Invoke-RestMethod -Uri http://127.0.0.1:5000/api/analyze `
+  -Method Post -ContentType 'application/json' `
+  -Body '{"article":"Paste at least 60 characters of article text here..."}'
+```
+
+The response contains a `label` (`fake` or `real`), a `confidence` score from 0 to 1, up to five contributing text `signals`, and a caveat. Confidence is the model's relative class score, not the probability that a claim is true. This tool detects patterns in historical training data; it does not fact-check articles.
+
+Run the app tests with `python -m pytest`.
+
+## Deploy on Render
+
+The repository includes a Render Blueprint in `render.yaml`. To publish the app, connect the public GitHub repository to Render and create a Blueprint instance from that file. Render builds the Python app, serves it with Waitress, and checks `/api/health`. The first article analyzed trains the model from the bundled dataset; free instances may sleep when idle and retrain after a restart.
+
 <img src="https://socialify.git.ci/kapilsinghnegi/Fake-News-Detection/image?description=1&font=Source%20Code%20Pro&forks=1&issues=1&language=1&name=1&owner=1&pattern=Charlie%20Brown&pulls=1&stargazers=1&theme=Dark" alt="Fake-News-Detection" width="1280" height="320" />
 
 
@@ -20,61 +51,18 @@ We have used a labelled dataset containing news articles along with their corres
 - True: Genuine news articles
 - False: Fake or fabricated news articles
 
-## System Requirements 
+## System Requirements
 
-Hardware :
-1. 4GB RAM
-2. i3 Processor
-3. 500MB free space
-
-Software :
-1. Anaconda
-2. Python
+- Python 3.10 or later
+- Several hundred megabytes of disk space for the dataset and Python dependencies
 
 ## Dependencies
 
-Before running the code, make sure you have the following libraries and packages installed:
-
-- Python 3
-- Scikit-learn
-- Pandas
-- Numpy
-- Seaborn
-- Matplotlib
-- Regular Expression
-
-You can install these dependencies using pip:
-
-```bash
-pip install pandas
-pip install numpy
-pip install matplotlib
-pip install sklearn
-pip install seaborn 
-pip install re 
-```
+The web app's dependencies are listed in `requirements.txt`; install them with `python -m pip install -r requirements.txt`.
 
 ## Usage
 
-1. Clone this repository to your local machine:
-
-```bash
-git clone https://github.com/kapilsinghnegi/Fake-News-Detection.git
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd fake-news-detection
-```
-
-3. Execute the Jupyter Notebook or Python scripts associated with each classifier to train and test the models. For example:
-
-```bash
-python random_forest_classifier.py
-```
-
-4. The code will produce evaluation metrics and provide a prediction for whether the given news is true or false based on the trained model.
+Run `python app.py` and open <http://127.0.0.1:5000> to analyze an article. The original notebook remains available for exploring its classifiers.
 
 ## Results
 
